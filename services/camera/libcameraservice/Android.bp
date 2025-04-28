@@ -260,9 +260,15 @@ cc_library {
     }) + select(soong_config_variable("camera", "libcameraservice_ext_lib"), {
         any @ flag_val: ["-DTARGET_CAMERA_SERVICE_EXT_LIB=\"" + flag_val + "\""],
         default: [],
+    }) + select(soong_config_variable("libcameraservice", "ext_lib"), {
+        any @ flag_val: ["-DTARGET_PROVIDES_CAMERA_PROVIDER_EXT_LIB"],
+        default: [],
     }),
 
-    whole_static_libs: select(soong_config_variable("camera", "libcameraservice_ext_lib"), {
+    whole_static_libs: select(soong_config_variable("libcameraservice", "ext_lib"), {
+        any @ flag_val: [flag_val],
+        default: ["libcameraservice_ext_lib"],
+    }) + select(soong_config_variable("camera", "libcameraservice_ext_lib"), {
         any @ flag_val: [flag_val],
         default: ["libcameraservice_ext_lib"],
     }),
